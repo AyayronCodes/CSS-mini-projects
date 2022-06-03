@@ -1,0 +1,50 @@
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu");
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Ubuntu", sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  overflow: hidden;
+  margin: 0;
+}
+
+.bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translate(-40px -40px);
+  width: calc(80px + 100vw);
+  height: calc(80px + 100vh);
+  background: url("./dog.jpg") no-repeat center center/cover;
+  filter: blur(70px);
+  z-index: -1;
+}
+
+.loading-text {
+  font-size: 60px;
+  color: rgb(236, 236, 236);
+  opacity: 1;
+}
+
+/* 
+.bg {
+  position: absolute;
+  top: -30px;
+  left: -30px;
+  height: calc(100vh + 60px);
+  width: calc(100vw + 60px);
+  background: url("./dog.jpg") no-repeat center center/cover;
+  z-index: -1;
+  filter: blur(0px);
+}
+
+.loading-text {
+  color: white;
+  font-size: 50px;
+} */

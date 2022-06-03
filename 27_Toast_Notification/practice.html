@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        height: 100vh;
+        background-color: rgb(128, 35, 128);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+      }
+      button {
+        padding: 1em;
+        font-size: 1rem;
+        border: none;
+        border-radius: .5em;
+        color: rgb(128, 35, 128);
+        cursor: pointer;
+      }
+      button:active {
+        transform: scale(0.98);
+      }
+      button:focus {
+        outline: none;
+      }
+      #toasts {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+      }
+      .toast {
+        /* width: 100px; */
+        background-color: #ccc;
+        color: white;
+        padding: 1em;
+        margin-bottom: .2em;
+        border-radius: .5em;
+        transition: 0.5s;
+      }
+      .toast.success {
+        background-color: green;
+        text-align: right
+      }
+      .toast.failure {
+        background-color: crimson;
+      }
+      .toast.danger {
+        background-color: orange;
+      }
+
+    </style>
+    <title>Toast Notification</title>
+  </head>
+  <body>
+    <div id="toasts">
+    </div>
+
+    <button class="btn" id="button">Show Notification</button>
+
+
+    <script>
+      const toastsContainer = document.getElementById('toasts')
+      const button = document.getElementById('button')
+
+      const toasts = [{
+        message: 'Successfully Done!',
+        type: 'success'
+      }, {
+        message: 'Something went wrong :(',
+        type: 'failure'
+      }, {
+        message: 'Ur cpu bout to explode',
+        type: 'danger'
+      }]
+
+
+      function createToast() {
+        const randomToast = toasts[Math.floor(Math.random() * 3)]
+        const toast = document.createElement('div')
+        toast.classList.add('toast', randomToast.type)
+        toast.innerText = randomToast.message
+        toastsContainer.append(toast)
+
+        setTimeout(() => {
+          toast.remove()
+        }, 2000)
+      }
+
+      button.addEventListener('click', createToast)
+    </script>
+  </body>
+</html>

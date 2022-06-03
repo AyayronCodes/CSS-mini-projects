@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    img {
+      max-width: 100%;
+      height: 100%;
+      object-position: center;
+      object-fit: cover;
+    }
+    body {
+      font-family: sans-serif;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background-color: #2A2A72;
+      color: white;
+    }
+    .card {
+      background-color: #4C2885;
+      max-width: 800px;
+      width: 90%;
+      padding: 2rem;
+      display: flex;
+      border-radius: 1rem;
+      align-items: flex-start;
+    }
+    .form {
+      background-color: #4C2885;
+      border: none;
+      border-radius: .5em;
+      overflow: hidden;
+      margin-bottom: 2rem;
+      width: 80%;
+      max-width: 700px;
+    }
+    .input {
+      width: 100%;
+      font-size: 1.2rem;
+      padding: 1em;
+      border: none;
+      background-color: #4c2885;
+      color: white;
+    }
+    .input::placeholder {
+      color: #ccc;
+    }
+    .input:focus {
+      outline: none;
+    }
+    .user-photo {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      border: 10px solid #2a2a72;
+      overflow: hidden;
+      flex: 0 0 auto;
+    }
+    .user-info {
+      margin-left: 2rem;
+    }
+    .user-name {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .user-desc {
+      line-height: 1.5;
+      margin-bottom: 1.5rem;
+    }
+    .user-stats {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 400px;
+      margin-bottom: 1.5rem;
+    }
+    .user-repos {
+      margin-bottom: 1.5rem;
+    }
+    .user-repo {
+      text-decoration: none;
+      color: white;
+      display: inline-block;
+      font-size: .7rem;
+      padding: .5em;
+      background-color: #2a2a72;
+      margin-bottom: .5em;
+    }
+
+    @media(max-width: 500px) {
+      html {
+        font-size: 14px;
+      }
+
+      .form {
+        max-width: 75%;
+      }
+      .card {
+        max-width: 90%;
+        flex-direction: column;
+      }
+      .user-photo {
+        margin: auto;
+        margin-bottom: 2rem;
+      }
+      .user-info {
+        margin-left: 0;
+      }
+      .user-stats {
+        font-size: .9rem;
+      }
+      .user-repos {
+        max-width: 90%;
+        margin: auto;
+        margin-bottom: 1.5rem;
+      }
+    }
+
+  </style>
+  <title>Practice Github Find User</title>
+</head>
+<body>
+  <form class="form">
+    <input type="text" class="input" placeholder="Search a Github User">
+  </form>
+  <!-- <div class="card">
+    <div class="user-photo">
+      <img src="./whale.jpg" alt="user photo">
+    </div>
+    <div class="user-info">
+      <h2 class="user-name">Brad Traversy</h2>
+      <p class="user-desc">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae animi perferendis provident dolores, mollitia doloribus.</p>
+      <div class="user-stats">
+        <span class="user-stat">3242 <strong>Followers</strong></span>
+        <span class="user-stat">6 <strong>Following</strong></span>
+        <span class="user-stat">210 <strong>Repos</strong></span>
+      </div>
+      <div class="user-repos">
+        <a class="user-repo" href="#">next-crasadfsfasdfh-course</a>
+        <a class="user-repo" href="#">another repo</a>
+        <a class="user-repo" href="#">third repo repo</a>
+        <a class="user-repo" href="#">next-crash-course</a>
+        <a class="user-repo" href="#">another rdasfadsfdsafdsfepo</a>
+        <a class="user-repo" href="#">third repo repo</a>
+      </div>
+    </div>
+  </div> -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js" integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ==" crossorigin="anonymous"></script>
+  <script>
+    const form = document.querySelector('.form')
+    const input = document.querySelector('.input')
+    const APIURL = 'https://api.github.com/users/'
+    let userInput
+    let cardErrorStatus = false
+
+    function clearCard() {
+      document.querySelector('.card').remove()
+    }
+
+    async function createCard() {
+      try {
+        const { data } = await axios(APIURL + userInput)
+        
+        const cardHTML = `
+          <div class="card">
+            <div class="user-photo">
+              <img src="${data.avatar_url}" alt="user photo">
+            </div>
+            <div class="user-info">
+              <h2 class="user-name">${data.name}</h2>
+              <p class="user-desc">${data.bio}</p>
+              <div class="user-stats">
+                <span class="user-stat">${data.followers} <strong>Followers</strong></span>
+                <span class="user-stat">${data.following} <strong>Following</strong></span>
+                <span class="user-stat">${data.public_repos} <strong>Repos</strong></span>
+              </div>
+              <div class="user-repos">
+              </div>
+            </div>
+          </div>
+        `
+
+        document.body.insertAdjacentHTML('beforeend', cardHTML)
+      }
+      catch(err) {
+        console.log(err)
+        const cardHTML = `
+          <div class="card">
+            No matching user found...
+          </div>    
+        `
+        document.body.insertAdjacentHTML('beforeend', cardHTML)
+        // cardErrorStatus = true
+      }
+    }
+
+    async function addRepos() {
+      try {
+        // if (cardErrorStatus) return
+        const response = await fetch(APIURL + userInput + '/repos?sort=created')
+        const data = await response.json()
+        
+        console.log(data.slice(0, 10))
+        const repos = document.querySelector('.user-repos')
+        data.slice(0, 10).forEach(repo => {
+
+          const repoHTML = `
+            <a class='user-repo' href='${repo.html_url}' target='_blank'>${repo.name}</a>
+          `
+
+          repos.insertAdjacentHTML('beforeend', repoHTML)
+        })
+
+      }
+      catch (err) {
+        console.log(err)
+      }
+    }
+
+    function init() {
+      // reset error status
+      // cardErrorStatus = false
+      // create user card
+      createCard()
+      // add repos to card
+      addRepos()
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault()
+
+      if (!input.value) return
+
+      if (userInput) clearCard()
+      
+      userInput = input.value
+      input.value = ''
+      
+      init()
+    })
+
+  </script>
+</body>
+</html>
